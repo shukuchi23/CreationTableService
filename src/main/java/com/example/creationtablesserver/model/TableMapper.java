@@ -6,15 +6,10 @@ import com.example.creationtablesserver.model.DTO.PrimaryKey;
 import com.example.creationtablesserver.model.DTO.TableDTO;
 import com.example.creationtablesserver.model.META.ColumnMeta;
 import com.example.creationtablesserver.model.META.TableMeta;
-import org.hibernate.Hibernate;
-import org.springframework.cglib.core.CollectionUtils;
-import org.springframework.context.annotation.Bean;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class TableMapper  {
 
