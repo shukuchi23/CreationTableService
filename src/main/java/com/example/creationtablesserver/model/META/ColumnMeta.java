@@ -1,14 +1,15 @@
 package com.example.creationtablesserver.model.META;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "column_meta", schema = "tech_test")
 public class ColumnMeta implements Serializable {
         @Id
-        @GeneratedValue
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        @Column(name = "id_c")
         private Integer id;
 
         @Column(name = "column_name")
@@ -28,29 +29,10 @@ public class ColumnMeta implements Serializable {
                  ", column_type='" + column_type + '\'' +
                  ", pr_key=" + pr_key +
                  ", tableName=" + table.getTable_name() +
-                 ", foreignKey=" + foreignKey +
                  '}';
         }
 
-        @Override
-        public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
-                ColumnMeta that = (ColumnMeta) o;
-                return id.equals(that.id) &&
-                 column_name.equals(that.column_name) &&
-                 column_type.equals(that.column_type) &&
-                 pr_key.equals(that.pr_key) &&
-                 create_date.equals(that.create_date) &&
-                 update_date.equals(that.update_date) &&
-                 table.equals(that.table) &&
-                 Objects.equals(foreignKey, that.foreignKey);
-        }
 
-        @Override
-        public int hashCode() {
-                return Objects.hash(id, column_name, column_type, pr_key, create_date, update_date, table, foreignKey);
-        }
 
         public Boolean getPr_key() {
                 return pr_key;
@@ -67,23 +49,8 @@ public class ColumnMeta implements Serializable {
         private LocalDateTime update_date;
 
         @ManyToOne(fetch = FetchType.LAZY, optional = false)
-        @JoinTable(
-                 name = "table_column",
-                 joinColumns = @JoinColumn(name = "column_id"),
-                 inverseJoinColumns = @JoinColumn(name = "table_name"))
+        @JoinColumn(name = "id_t")
         private TableMeta table;
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "fk_key")
-        private ColumnMeta foreignKey;
-
-        public ColumnMeta getForeignKey() {
-                return foreignKey;
-        }
-
-        public void setForeignKey(ColumnMeta foreignKey) {
-                this.foreignKey = foreignKey;
-        }
 
         public Integer getId() {
                 return id;

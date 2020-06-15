@@ -1,11 +1,8 @@
 package com.example.creationtablesserver.model.META;
 
-import org.hibernate.annotations.CollectionType;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,7 +12,21 @@ import java.util.Set;
 public class TableMeta implements Serializable {
 //        -- FIELD---
         @Id
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        @Column(name = "id_t")
+        private Integer id;
+
+        @Column(name = "table_name")
         private String table_name;
+
+        public Integer getId() {
+                return id;
+        }
+
+        public void setId(Integer id) {
+                this.id = id;
+        }
+
         @Column (name = "create_date")
         private LocalDateTime create_date;
 
@@ -49,9 +60,9 @@ public class TableMeta implements Serializable {
 //        NICE
         @OneToMany(cascade = CascadeType.ALL)
         @JoinTable(
-                name = "table_column",
-                joinColumns = @JoinColumn(name = "table_name"),
-                inverseJoinColumns = @JoinColumn(name = "column_id"))
+                name = "column_meta",
+                joinColumns = @JoinColumn(name = "id_t"),
+                inverseJoinColumns = @JoinColumn(name = "id_c"))
         private Set<ColumnMeta> columns;
 
 

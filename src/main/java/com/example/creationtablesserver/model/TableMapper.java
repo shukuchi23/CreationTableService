@@ -6,13 +6,13 @@ import com.example.creationtablesserver.model.DTO.PrimaryKey;
 import com.example.creationtablesserver.model.DTO.TableDTO;
 import com.example.creationtablesserver.model.META.ColumnMeta;
 import com.example.creationtablesserver.model.META.TableMeta;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 public class TableMapper  {
-
 
         public static TableMeta dtoTableToMeta(TableDTO dto) {
                 TableMeta meta = new TableMeta();
@@ -97,7 +97,7 @@ public class TableMapper  {
                         columnMeta.setForeignKey();
                         System.out.println(columnMeta.toString());
                 });
-                System.out.printf("Meta columns size: %d\nDto columns size: %d\n");
+//                System.out.printf("Meta columns size: %d\nDto columns size: %d\n", );
                 return mColumns;
         }
 
