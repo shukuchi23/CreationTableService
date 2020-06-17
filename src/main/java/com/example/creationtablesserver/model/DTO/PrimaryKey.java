@@ -17,13 +17,11 @@ public class PrimaryKey implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-                if (this == o) return true;
-                return key.equals((String) o);
-//                if (o != null && o instanceof String )
-//                        return key.equals((String) o);
-//                if (o == null || getClass() != o.getClass()) return false;
-//                PrimaryKey that = (PrimaryKey) o;
-//                return key.equals(that.key);
+                if (o != null && o instanceof String)
+                        return key.equals((String) o);
+                if (o == null || getClass() != o.getClass()) return false;
+                PrimaryKey that = (PrimaryKey) o;
+                return key.equals(that.key);
         }
 
         @Override

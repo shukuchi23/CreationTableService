@@ -1,23 +1,32 @@
 package com.example.creationtablesserver.model.META;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "fkeys", schema = "tech_test")
-public class FkeyMeta {
+public class FkeyMeta implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE)
         @Column(name = "id_fk")
         private Integer id;
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "ref_c1")
-        private ColumnMeta ref_c1;
+        @AttributeOverrides({
+         @AttributeOverride(name = "table_name", column = @Column(name = "ref_table")),
+         @AttributeOverride(name = "column_name", column = @Column(name = "ref_col"))
+        })
+        @Embedded
+        private ColumnId refColumn;
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "id_c2")
-        private ColumnMeta id_c2;
+        @Override
+        public String toString() {
+                return "\nFkeyMeta{" +
+                 "id=" + id +
+                 ", refColumn=" + refColumn +
+                 ", from=" + from +
+                 '}';
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -25,13 +34,12 @@ public class FkeyMeta {
                 if (o == null || getClass() != o.getClass()) return false;
                 FkeyMeta fkeyMeta = (FkeyMeta) o;
                 return id.equals(fkeyMeta.id) &&
-                 ref_c1.equals(fkeyMeta.ref_c1) &&
-                 id_c2.equals(fkeyMeta.id_c2);
+                 refColumn.equals(fkeyMeta.refColumn);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, ref_c1, id_c2);
+                return Objects.hash(id, refColumn);
         }
 
         public Integer getId() {
@@ -42,22 +50,26 @@ public class FkeyMeta {
                 this.id = id;
         }
 
-        public ColumnMeta getRef_c1() {
-                return ref_c1;
+        public ColumnMeta getFrom() {
+                return from;
         }
 
-        public void setRef_c1(ColumnMeta ref_c1) {
-                this.ref_c1 = ref_c1;
+        public void setFrom(ColumnMeta from) {
+                this.from = from;
         }
 
-        public ColumnMeta getId_c2() {
-                return id_c2;
+        @OneToOne(mappedBy = "fkey", cascade = {CascadeType.ALL})
+        private ColumnMeta from;
+
+        public void setRefColumn(ColumnId id) {
+                this.refColumn = id;
         }
 
-        public void setId_c2(ColumnMeta id_c2) {
-                this.id_c2 = id_c2;
+        public ColumnId getRefColumn() {
+                return refColumn;
         }
 
-        public FkeyMeta() {}
+        public FkeyMeta() {
+        }
 
 }

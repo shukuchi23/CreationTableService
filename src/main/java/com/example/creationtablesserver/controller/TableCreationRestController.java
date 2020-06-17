@@ -14,7 +14,9 @@ import java.util.List;
 @RestController
 @EnableAutoConfiguration
 public class TableCreationRestController {
+        @Autowired
         private TableDAO tableDAO;
+        @Autowired
         private TableService tableService;
 
         @Autowired
@@ -37,8 +39,10 @@ public class TableCreationRestController {
 
         @PostMapping("/create")
         public ResponseEntity<String> create(@RequestBody List<TableDTO> tables) {
+
                 for (TableDTO table : tables) {
                         tableDAO.create(table);
+                        System.out.println("DAO succes" + table.getName());
                         tableService.addTable(table);
                 }
 
@@ -52,6 +56,7 @@ public class TableCreationRestController {
                 return new ResponseEntity<>("dropping successful", HttpStatus.OK);
         }
 
+        //        TODO:
         @PutMapping("/edit/{tableName}")
         public ResponseEntity<String> editTable(@PathVariable String tableName, @RequestBody TableDTO table) {
 //                tableDAO.update()

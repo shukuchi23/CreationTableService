@@ -1,12 +1,10 @@
 package com.example.creationtablesserver.repository;
 
 import com.example.creationtablesserver.model.META.TableMeta;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@Repository
-public interface TableRepository extends JpaRepository<TableMeta, String>
-{
+//@Repository("tableRepository")
+@EnableJpaRepositories
+public interface TableRepository extends JpaRepository<TableMeta, String> {
 }

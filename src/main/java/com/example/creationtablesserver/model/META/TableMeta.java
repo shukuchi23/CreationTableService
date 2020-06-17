@@ -10,37 +10,16 @@ import java.util.Set;
 @Entity
 @Table(name = "table_meta", schema = "tech_test")
 public class TableMeta implements Serializable {
-//        -- FIELD---
+        //        -- FIELD---
         @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        @Column(name = "id_t")
-        private Integer id;
-
-        @Column(name = "table_name")
         private String table_name;
-
-        public Integer getId() {
-                return id;
-        }
-
-        public void setId(Integer id) {
-                this.id = id;
-        }
-
-        @Column (name = "create_date")
         private LocalDateTime create_date;
-
-        @Override
-        public String toString() {
-                return "TableMeta{" +
-                 "table_name='" + table_name + '\'' +
-                 ", columns=" + columns +
-                 '}';
-        }
-
-        @Column (name = "update_date")
         private LocalDateTime update_date;
-//        GET & SET
+
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "someTable", cascade = CascadeType.ALL)
+        private Set<ColumnMeta> columns;
+
+        //        GET & SET
         public LocalDateTime getUpdate_date() {
                 return update_date;
         }
@@ -56,15 +35,6 @@ public class TableMeta implements Serializable {
         public void setColumns(Set<ColumnMeta> columns) {
                 this.columns = columns;
         }
-
-//        NICE
-        @OneToMany(cascade = CascadeType.ALL)
-        @JoinTable(
-                name = "column_meta",
-                joinColumns = @JoinColumn(name = "id_t"),
-                inverseJoinColumns = @JoinColumn(name = "id_c"))
-        private Set<ColumnMeta> columns;
-
 
         @Override
         public boolean equals(Object o) {
@@ -105,6 +75,17 @@ public class TableMeta implements Serializable {
         public void toUpdate() {
                 setUpdate_date(LocalDateTime.now());
         }
-        public TableMeta(){}
 
+        public TableMeta() {
+        }
+
+        @Override
+        public String toString() {
+                return "\nTableMeta{" +
+                 "table_name='" + table_name + '\'' +
+                 ", create_date=" + create_date +
+                 ", update_date=" + update_date +
+                 ", columns=" + columns +
+                 '}';
+        }
 }
