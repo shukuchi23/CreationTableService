@@ -10,9 +10,27 @@ public class TableDTO {
         private List<ForeignKey> foreignKeys;
         private List<PrimaryKey> primaryKeys;
 
-        public TableDTO() {}
+        public TableDTO() {
+        }
 
         /*Геттеры, Сеттеры*/
+        public ColumnDTO findColumn(String columnName) {
+                for (ColumnDTO column : columns) {
+                        if (column.getColumnName().equals(columnName))
+                                return column;
+                }
+                return null;
+        }
+
+        public ForeignKey findFkeyByColumn(String column) {
+                if (foreignKeys != null) {
+                        for (ForeignKey fk : foreignKeys) {
+                                if (fk.getName().equals(column))
+                                        return fk;
+                        }
+                }
+                return null;
+        }
 
         public List<PrimaryKey> getPrimaryKeys() {
                 return primaryKeys;

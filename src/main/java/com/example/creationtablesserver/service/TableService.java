@@ -1,20 +1,33 @@
 package com.example.creationtablesserver.service;
 
 import com.example.creationtablesserver.model.DTO.TableDTO;
+import com.example.creationtablesserver.model.META.TableMeta;
 import com.example.creationtablesserver.model.TableMapper;
 import com.example.creationtablesserver.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class TableService {
+
+        private TableRepository tableRepository;
+
+        public TableService() {
+        }
+
         @Autowired
-        TableRepository tableRepository;
+        public void setTableRepository(TableRepository tableRepository) {
+                this.tableRepository = tableRepository;
+        }
+
+        @Autowired
+        public TableService(TableRepository repository) {
+                this.tableRepository = repository;
+        }
 
         @Transactional
         public List<TableDTO> getAllTables() {
@@ -33,7 +46,9 @@ public class TableService {
 
         @Transactional
         public void addTable(TableDTO table) {
-                tableRepository.saveAndFlush(TableMapper.dtoTableToMeta(table));
+                TableMeta meta = TableMapper.dtoTableToMeta(table);
+                System.out.println(meta);
+                tableRepository.saveAndFlush(meta);
         }
 
         @Transactional

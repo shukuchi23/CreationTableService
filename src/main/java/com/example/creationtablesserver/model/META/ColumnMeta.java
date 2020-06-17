@@ -1,4 +1,5 @@
 package com.example.creationtablesserver.model.META;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,29 +8,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "column_meta", schema = "tech_test")
 public class ColumnMeta implements Serializable {
-        @Id
-        @GeneratedValue
-        private Integer id;
 
-        @Column(name = "column_name")
-        private String column_name;
+        @EmbeddedId
+        private ColumnId column_pk;
 
         @Column(name = "column_type")
         private String column_type;
 
-        @Column(name = "pr_key")
-        private Boolean pr_key;
+        public ColumnId getColumn_pk() {
+                return column_pk;
+        }
 
-        @Override
-        public String toString() {
-                return "ColumnMeta{" +
-                 "id=" + id +
-                 ", column_name='" + column_name + '\'' +
-                 ", column_type='" + column_type + '\'' +
-                 ", pr_key=" + pr_key +
-                 ", tableName=" + table.getTable_name() +
-                 ", foreignKey=" + foreignKey +
-                 '}';
+        public void setColumn_pk(ColumnId column_pk) {
+                this.column_pk = column_pk;
         }
 
         @Override
@@ -37,20 +28,47 @@ public class ColumnMeta implements Serializable {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 ColumnMeta that = (ColumnMeta) o;
-                return id.equals(that.id) &&
-                 column_name.equals(that.column_name) &&
+                return column_pk.equals(that.column_pk) &&
                  column_type.equals(that.column_type) &&
                  pr_key.equals(that.pr_key) &&
                  create_date.equals(that.create_date) &&
                  update_date.equals(that.update_date) &&
-                 table.equals(that.table) &&
-                 Objects.equals(foreignKey, that.foreignKey);
+                 someTable.equals(that.someTable) &&
+                 Objects.equals(fkey, that.fkey);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, column_name, column_type, pr_key, create_date, update_date, table, foreignKey);
+                return Objects.hash(column_pk, column_type, pr_key, create_date, update_date, someTable, fkey);
         }
+
+        @Column(name = "pr_key")
+        private Boolean pr_key;
+
+        @Column(name = "create_date")
+        private LocalDateTime create_date;
+
+        @Column(name = "update_date")
+        private LocalDateTime update_date;
+
+        @Override
+        public String toString() {
+                return "\nColumnMeta{" +
+                 ", column_type='" + column_type + '\'' +
+                 ", pr_key=" + pr_key +
+                 ", create_date=" + create_date +
+                 ", update_date=" + update_date +
+                 '}';
+        }
+
+        @ManyToOne(fetch = FetchType.LAZY, optional = false)
+        @JoinColumn(referencedColumnName = "table_name")
+//        @ManyToOne
+        private TableMeta someTable;
+
+        @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+        @JoinColumn(name = "fk_id")
+        private FkeyMeta fkey;
 
         public Boolean getPr_key() {
                 return pr_key;
@@ -60,45 +78,12 @@ public class ColumnMeta implements Serializable {
                 this.pr_key = pr_key;
         }
 
-        @Column (name = "create_date")
-        private LocalDateTime create_date;
-
-        @Column (name = "update_date")
-        private LocalDateTime update_date;
-
-        @ManyToOne(fetch = FetchType.LAZY, optional = false)
-        @JoinTable(
-                 name = "table_column",
-                 joinColumns = @JoinColumn(name = "column_id"),
-                 inverseJoinColumns = @JoinColumn(name = "table_name"))
-        private TableMeta table;
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "fk_key")
-        private ColumnMeta foreignKey;
-
-        public ColumnMeta getForeignKey() {
-                return foreignKey;
+        public FkeyMeta getFkey() {
+                return fkey;
         }
 
-        public void setForeignKey(ColumnMeta foreignKey) {
-                this.foreignKey = foreignKey;
-        }
-
-        public Integer getId() {
-                return id;
-        }
-
-        public void setId(Integer id) {
-                this.id = id;
-        }
-
-        public String getColumn_name() {
-                return column_name;
-        }
-
-        public void setColumn_name(String column_name) {
-                this.column_name = column_name;
+        public void setFkey(FkeyMeta fkey) {
+                this.fkey = fkey;
         }
 
         public String getColumn_type() {
@@ -109,24 +94,24 @@ public class ColumnMeta implements Serializable {
                 this.column_type = column_type;
         }
 
-        public TableMeta getTable() {
-                return table;
+        public TableMeta getSomeTable() {
+                return someTable;
         }
 
-        public void setTable(TableMeta table) {
-                this.table = table;
+        public void setSomeTable(TableMeta table) {
+                this.someTable = table;
         }
 
         public LocalDateTime getCreate_date() {
                 return create_date;
         }
 
-        public void setCreate_date(LocalDateTime create_date) {
-                this.create_date = create_date;
-        }
-
         public LocalDateTime getUpdate_date() {
                 return update_date;
+        }
+
+        public void setCreate_date(LocalDateTime create_date) {
+                this.create_date = create_date;
         }
 
         public void setUpdate_date(LocalDateTime update_date) {

@@ -20,7 +20,7 @@ public class TableDAOImpl implements TableDAO {
 
         @Override
         public boolean create(TableDTO table) {
-                StringBuilder str = new StringBuilder("create table if not exist ");
+                StringBuilder str = new StringBuilder("create table if not exists ");
                 str.append(table.getName() + " ( ");
                 str.append(columnToSql(table.getColumns().iterator()));
 
@@ -34,6 +34,7 @@ public class TableDAOImpl implements TableDAO {
 
                 str.append(");");
                 jdbcTemplate.execute(str.toString());
+
                 return true;
         }
         private StringBuilder columnToSql(Iterator<ColumnDTO> col_iter) {
@@ -119,7 +120,7 @@ public class TableDAOImpl implements TableDAO {
 
         @Override
         public boolean delete(String tableName) {
-                jdbcTemplate.execute(new Formatter().format("delete table %s ;", tableName).toString());
+                jdbcTemplate.execute(new Formatter().format("drop table if exists %s ;", tableName).toString());
                 return true;
         }
 }
