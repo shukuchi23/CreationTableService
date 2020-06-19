@@ -24,7 +24,7 @@ public class TableMapper  {
                         ColumnMeta current = new ColumnMeta();
                         current.setColumn_type(cDto.getType());
                         current.setColumn_pk(new ColumnId(meta.getTable_name(), cDto.getColumnName()));
-                        current.setSomeTable(meta);     // AYYYFFF
+                        current.setSomeTable(meta);
                         current.setPr_key(dto.getPrimaryKeys().contains(new PrimaryKey(cDto.getColumnName())));
 
                         FkeyMeta fkMeta = null;
@@ -41,7 +41,6 @@ public class TableMapper  {
                 }
 
                 meta.setColumns(columnMetas);
-//                System.out.println(meta.toString());
                 return meta;
         }
         public static TableDTO metaTabletoDto(TableMeta meta) {
@@ -80,5 +79,4 @@ public class TableMapper  {
                 });
                 return dtoColumns;
         }
-
 }
