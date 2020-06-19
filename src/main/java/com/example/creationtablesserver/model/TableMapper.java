@@ -24,7 +24,7 @@ public class TableMapper  {
                         ColumnMeta current = new ColumnMeta();
                         current.setColumn_type(cDto.getType());
                         current.setColumn_pk(new ColumnId(meta.getTable_name(), cDto.getColumnName()));
-                        current.setSomeTable(meta);     // AYYYFFF
+                        current.setSomeTable(meta);
                         current.setPr_key(dto.getPrimaryKeys().contains(new PrimaryKey(cDto.getColumnName())));
 
                         FkeyMeta fkMeta = null;
@@ -41,7 +41,6 @@ public class TableMapper  {
                 }
 
                 meta.setColumns(columnMetas);
-//                System.out.println(meta.toString());
                 return meta;
         }
         public static TableDTO metaTabletoDto(TableMeta meta) {
@@ -59,7 +58,7 @@ public class TableMapper  {
                                 fkeys.add(tmp);
                         }
                 });
-                dto.setForeignKeys(fkeys.isEmpty() ? null : fkeys);
+                dto.setForeignKeys(fkeys);
 
                 List<PrimaryKey> pkeys = new LinkedList<>();
                 meta.getColumns().forEach(mcol -> {
@@ -67,11 +66,10 @@ public class TableMapper  {
                                 pkeys.add(new PrimaryKey(mcol.getColumn_pk().getColumn_name()));
                         }
                 });
-                dto.setPrimaryKeys(pkeys.isEmpty() ? null : pkeys);
+                dto.setPrimaryKeys(pkeys);
                 return dto;
         }
         private static List<ColumnDTO> metaColumnToDto (Set<ColumnMeta> mColumns) {
-                System.out.println("-----------METAtoDTO-------------");
                 List<ColumnDTO> dtoColumns = new LinkedList<>();
                 mColumns.forEach(column ->{
                         ColumnDTO columnDto = new ColumnDTO();
@@ -79,8 +77,6 @@ public class TableMapper  {
                         columnDto.setType(column.getColumn_type());
                         dtoColumns.add(columnDto);
                 });
-                System.out.printf("Meta columns size: %d\nDto columns size: %d\n", mColumns.size(), dtoColumns.size());
                 return dtoColumns;
         }
-
 }
