@@ -50,7 +50,7 @@ public class TableMapper  {
                 dto.setColumns(metaColumnToDto(meta.getColumns()));
                 /*конвертация Внешних ключей*/
                 List<ForeignKey> fkeys = new LinkedList<>();
-                meta.getColumns().forEach(mcol ->{
+                meta.getColumns().forEach(mcol -> {
                         if (mcol.getFkey() != null) {
                                 ForeignKey tmp = new ForeignKey();
                                 tmp.setName(mcol.getColumn_pk().getColumn_name());
@@ -59,14 +59,15 @@ public class TableMapper  {
                                 fkeys.add(tmp);
                         }
                 });
-                dto.setForeignKeys(fkeys);
+                dto.setForeignKeys(fkeys.isEmpty() ? null : fkeys);
 
                 List<PrimaryKey> pkeys = new LinkedList<>();
-                meta.getColumns().forEach(mcol ->{
+                meta.getColumns().forEach(mcol -> {
                         if (mcol.getPr_key()) {
                                 pkeys.add(new PrimaryKey(mcol.getColumn_pk().getColumn_name()));
-                        } });
-                dto.setPrimaryKeys(pkeys);
+                        }
+                });
+                dto.setPrimaryKeys(pkeys.isEmpty() ? null : pkeys);
                 return dto;
         }
         private static List<ColumnDTO> metaColumnToDto (Set<ColumnMeta> mColumns) {

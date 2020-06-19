@@ -15,6 +15,15 @@ public class ColumnMeta implements Serializable {
         @Column(name = "column_type")
         private String column_type;
 
+        @ManyToOne(fetch = FetchType.LAZY, optional = false)
+        @JoinColumn(referencedColumnName = "table_name")
+//        @ManyToOne
+        private TableMeta someTable;
+
+        @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+        @JoinColumn(name = "fk_id")
+        private FkeyMeta fkey;
+
         public ColumnId getColumn_pk() {
                 return column_pk;
         }
@@ -61,14 +70,7 @@ public class ColumnMeta implements Serializable {
                  '}';
         }
 
-        @ManyToOne(fetch = FetchType.LAZY, optional = false)
-        @JoinColumn(referencedColumnName = "table_name")
-//        @ManyToOne
-        private TableMeta someTable;
 
-        @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-        @JoinColumn(name = "fk_id")
-        private FkeyMeta fkey;
 
         public Boolean getPr_key() {
                 return pr_key;
