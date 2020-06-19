@@ -71,7 +71,6 @@ public class TableMapper  {
                 return dto;
         }
         private static List<ColumnDTO> metaColumnToDto (Set<ColumnMeta> mColumns) {
-                System.out.println("-----------METAtoDTO-------------");
                 List<ColumnDTO> dtoColumns = new LinkedList<>();
                 mColumns.forEach(column ->{
                         ColumnDTO columnDto = new ColumnDTO();
@@ -79,7 +78,6 @@ public class TableMapper  {
                         columnDto.setType(column.getColumn_type());
                         dtoColumns.add(columnDto);
                 });
-                System.out.printf("Meta columns size: %d\nDto columns size: %d\n", mColumns.size(), dtoColumns.size());
                 return dtoColumns;
         }
 
