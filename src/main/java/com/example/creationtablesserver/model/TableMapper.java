@@ -59,7 +59,7 @@ public class TableMapper  {
                                 fkeys.add(tmp);
                         }
                 });
-                dto.setForeignKeys(fkeys.isEmpty() ? null : fkeys);
+                dto.setForeignKeys(fkeys);
 
                 List<PrimaryKey> pkeys = new LinkedList<>();
                 meta.getColumns().forEach(mcol -> {
@@ -67,7 +67,7 @@ public class TableMapper  {
                                 pkeys.add(new PrimaryKey(mcol.getColumn_pk().getColumn_name()));
                         }
                 });
-                dto.setPrimaryKeys(pkeys.isEmpty() ? null : pkeys);
+                dto.setPrimaryKeys(pkeys);
                 return dto;
         }
         private static List<ColumnDTO> metaColumnToDto (Set<ColumnMeta> mColumns) {
