@@ -5,6 +5,7 @@ import com.example.creationtablesserver.model.DTO.ForeignKey;
 import com.example.creationtablesserver.model.DTO.PrimaryKey;
 import com.example.creationtablesserver.model.DTO.TableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class TableDAOImpl implements TableDAO {
 
         @Override
         public boolean create(TableDTO table) {
+
                 StringBuilder str = new StringBuilder("create table if not exists ");
                 str.append(table.getName() + " ( ");
                 str.append(columnToSql(table.getColumns().iterator()));

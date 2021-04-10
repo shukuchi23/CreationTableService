@@ -4,6 +4,7 @@ import com.example.creationtablesserver.model.DTO.TableDTO;
 import com.example.creationtablesserver.model.META.TableMeta;
 import com.example.creationtablesserver.model.TableMapper;
 import com.example.creationtablesserver.repository.TableRepository;
+import com.example.creationtablesserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 public class TableService {
 
         private TableRepository tableRepository;
-
         public TableService() {
         }
 

@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.controller;
+package com.example.creationtablesserver.rest;
 
 import com.example.creationtablesserver.dao.TableDAO;
 import com.example.creationtablesserver.model.DTO.TableDTO;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @EnableAutoConfiguration
 @Transactional
+//@RequestMapping("/projects")
 public class TableCreationRestController {
         @Autowired
         private TableDAO tableDAO;
@@ -35,6 +37,7 @@ public class TableCreationRestController {
         }
 
         @GetMapping("/tables")
+        @PreAuthorize("hasAuthority('user:crud')")
         public ResponseEntity<List<TableDTO>> getAllTables() {
                 return new ResponseEntity<>(tableService.getAllTables(), HttpStatus.OK);
         }

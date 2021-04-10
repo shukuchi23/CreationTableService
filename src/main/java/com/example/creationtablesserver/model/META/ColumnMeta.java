@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "column_meta", schema = "tech_test")
+@Table(name = "column_meta", schema = "tech")
 public class ColumnMeta implements Serializable {
 
         @EmbeddedId
