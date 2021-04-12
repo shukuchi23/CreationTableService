@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 @Service
 public class TableService {
 
+        @Autowired
         private TableRepository tableRepository;
-        public TableService() {
+
+        /*public TableService() {
         }
 
         @Autowired
@@ -27,7 +29,7 @@ public class TableService {
         @Autowired
         public TableService(TableRepository repository) {
                 this.tableRepository = repository;
-        }
+        }*/
 
         @Transactional
         public List<TableDTO> getAllTables() {

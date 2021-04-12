@@ -1,29 +1,30 @@
-package com.example.creationtablesserver.dao;
+package com.example.creationtablesserver.dao.table;
 
 import com.example.creationtablesserver.model.DTO.ColumnDTO;
 import com.example.creationtablesserver.model.DTO.ForeignKey;
 import com.example.creationtablesserver.model.DTO.PrimaryKey;
 import com.example.creationtablesserver.model.DTO.TableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 @Component
 public class TableDAOImpl implements TableDAO {
         JdbcTemplate jdbcTemplate;
+
         @Autowired
-        public TableDAOImpl(JdbcTemplate jdbcTemplate) {
-                this.jdbcTemplate = jdbcTemplate;
+        public TableDAOImpl(DataSource dataSource) {
+                this.jdbcTemplate = new JdbcTemplate(dataSource);
         }
 
         @Override
         public boolean create(TableDTO table) {
 
                 StringBuilder str = new StringBuilder("create table if not exists ");
-                str.append(table.getName() + " ( ");
+                str.append(table.getName()).append(" ( ");
                 str.append(columnToSql(table.getColumns().iterator()));
 
                 if (table.getPrimaryKeys() != null)

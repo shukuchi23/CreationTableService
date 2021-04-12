@@ -1,39 +1,49 @@
 package com.example.creationtablesserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "user_info", schema = "security_scheme")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     private Long user_id;
+
     @Column(name = "username")
-    @NonNull
+    @NotEmpty(message = "Username should not be empty")
+    @Size(min = 2, max = 20, message = "Username to short")
     private String username;
+
     @Column(name = "password")
-    @NonNull
+    @NotEmpty(message = "Password should not be empty")
     private String password;
 
    /* @OneToMany()
     private Set<Database> usedDataBases;*/
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")
     @NonNull
-    private Role role;
+    private Role role = Role.USER;
 
     @Column(name = "create_date")
     @NonNull
-    private Date create_date;
+    private Date create_date = new Date();
 
     public User() {
-
     }
 }

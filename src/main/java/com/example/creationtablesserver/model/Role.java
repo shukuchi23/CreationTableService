@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
+
     USER(Set.of(Permission.USER_CRUD_TABLE)),
     ADMIN(Set.of(Permission.USER_CRUD_TABLE, Permission.ADMIN_CRUD_USERS));
 

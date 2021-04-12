@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.rest;
 
-import com.example.creationtablesserver.dao.TableDAO;
+import com.example.creationtablesserver.dao.table.TableDAO;
 import com.example.creationtablesserver.model.DTO.TableDTO;
 import com.example.creationtablesserver.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 @EnableAutoConfiguration
 @Transactional
 //@RequestMapping("/projects")
+@PreAuthorize("hasAuthority('user:crud')")
 public class TableCreationRestController {
         @Autowired
         private TableDAO tableDAO;
@@ -37,12 +39,13 @@ public class TableCreationRestController {
         }
 
         @GetMapping("/tables")
-        @PreAuthorize("hasAuthority('user:crud')")
+//        @PreAuthorize("hasAuthority('user:crud')")
         public ResponseEntity<List<TableDTO>> getAllTables() {
                 return new ResponseEntity<>(tableService.getAllTables(), HttpStatus.OK);
         }
 
         @PostMapping("/create")
+        @PreAuthorize("hasAuthority('user:crud')")
         public ResponseEntity<String> create(@RequestBody List<TableDTO> tables) {
 
                 for (TableDTO table : tables) {

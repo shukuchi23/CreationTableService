@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.dao;
+package com.example.creationtablesserver.dao.table;
 
 import com.example.creationtablesserver.model.DTO.TableDTO;
 
