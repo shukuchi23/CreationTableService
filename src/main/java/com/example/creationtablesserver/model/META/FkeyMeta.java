@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "fkeys", schema = "tech_test")
+@Table(name = "fkeys", schema = "tech")
 public class FkeyMeta implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE)

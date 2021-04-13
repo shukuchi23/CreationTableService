@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.main;
+package com.example.creationtablesserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,17 +6,19 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(
- scanBasePackages = {
-  "com.example.creationtablesserver.controller", "com.example.creationtablesserver.dao",
-  "com.example.creationtablesserver.service"
- }
+ scanBasePackages = {"com.example.creationtablesserver"}
 
 
 )
 @EnableJpaRepositories(
  basePackages = "com.example.creationtablesserver.repository"
 )
-@EntityScan(basePackages = {"com.example.creationtablesserver.model.META"})
+/*scanBasePackages = {
+         "com.example.creationtablesserver.rest", "com.example.creationtablesserver.dao",
+  "com.example.creationtablesserver.service", "com.example.creationtablesserver.config",
+		 "com.example.creationtablesserver.*"
+ }*/
+@EntityScan(basePackages = {"com.example.creationtablesserver.model"})
 public class CreationtablesserverApplication {
 
 	public static void main(String[] args) {

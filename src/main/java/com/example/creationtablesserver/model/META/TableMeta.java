@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "table_meta", schema = "tech_test")
+@Table(name = "table_meta", schema = "tech")
 public class TableMeta implements Serializable {
         //        -- FIELD---
         @Id
