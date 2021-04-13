@@ -21,7 +21,6 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-test'
 
 	compileOnly 'org.projectlombok:lombok:1.18.8'
-
 	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 	runtimeOnly 'org.postgresql:postgresql'
 

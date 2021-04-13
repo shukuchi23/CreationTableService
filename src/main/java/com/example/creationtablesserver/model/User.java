@@ -2,13 +2,10 @@ package com.example.creationtablesserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -19,7 +16,8 @@ import java.util.Date;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "users_id_seq", schema = "security_scheme", sequenceName = "user_id_seq",
+                        allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     private Long user_id;
 
@@ -31,9 +29,6 @@ public class User {
     @Column(name = "password")
     @NotEmpty(message = "Password should not be empty")
     private String password;
-
-   /* @OneToMany()
-    private Set<Database> usedDataBases;*/
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")

@@ -8,4 +8,4 @@ create table if not exists security_scheme.user_info(
     UNIQUE (username, password)
 );
 alter table security_scheme.user_info owner to  shukuchi;
-CREATE SEQUENCE user_id_seq START WITH 3 INCREMENT BY 1;
+create sequence security_scheme.user_id_seq start with 3 increment by 1;
