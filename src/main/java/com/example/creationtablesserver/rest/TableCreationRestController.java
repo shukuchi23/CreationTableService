@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -39,8 +38,8 @@ public class TableCreationRestController {
         }
 
         @GetMapping("/tables")
-//        @PreAuthorize("hasAuthority('user:crud')")
         public ResponseEntity<List<TableDTO>> getAllTables() {
+//                System.out.printf("%s[%d]\n", authentication.getName(), ();
                 return new ResponseEntity<>(tableService.getAllTables(), HttpStatus.OK);
         }
 
