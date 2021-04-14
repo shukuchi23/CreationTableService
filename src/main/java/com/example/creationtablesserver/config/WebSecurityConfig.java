@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-//        printBcrypt();
     }
 
     @Override
@@ -54,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/users/add", "/auth/join").permitAll()
+                .antMatchers("/", "/auth/login", "/auth/join").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -62,13 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        super.configure(http);
     }
 
-    private static void printBcrypt() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
-        String[] pass = {"1337", "test_pass", "user"};
-        for (String x : pass) {
-            System.out.println(x + ": " + bCryptPasswordEncoder.encode(x));
-        }
-    }
 
     @Bean
     protected DaoAuthenticationProvider daoAuthenticationProvider() {
