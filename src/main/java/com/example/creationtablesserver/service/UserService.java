@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service("userService")
 public class UserService {
-
     @Autowired
     private UserRepository repository;
 
@@ -35,23 +35,15 @@ public class UserService {
     public User getById(Long id) {
         return repository.findById(id).get();
     }
+    @Transactional
+    public Optional<User> getByUsername(String username) {
+        return repository.findByUsername(username);
+    }
 
     @Transactional
     public long getAmount() {
         return repository.count();
     }
 
-    /*public UserService() {
-    }*/
-
-   /* @Autowired
-    public void setRepository(UserRepository repository) {
-        this.repository = repository;
-    }
-
-    @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }*/
 
 }

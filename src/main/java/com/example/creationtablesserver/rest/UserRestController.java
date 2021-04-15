@@ -3,6 +3,7 @@ package com.example.creationtablesserver.rest;
 import com.example.creationtablesserver.model.User;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +20,14 @@ public class UserRestController {
     @Autowired
     private UserService service;
 
+    /* TODO: добавить доступ админу*/
     @GetMapping()
     public List<User> getAllUsers() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@securityChecker.checkUserId(#id)")
     public User getById(@PathVariable Long id) {
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return service.getById(id);
