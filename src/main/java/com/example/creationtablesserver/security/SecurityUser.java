@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.security;
 
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.user.AuthorityUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,11 +56,11 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-    public static UserDetails fromUser(User user) {
+    public static UserDetails fromUser(AuthorityUser authorityUser) {
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(),
-                user.getRole().getAuthorities()
+                authorityUser.getUsername(), authorityUser.getPassword(),
+                authorityUser.getRole().getAuthorities()
         );
     }
 }

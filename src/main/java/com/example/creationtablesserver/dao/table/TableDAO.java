@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.dao.table;
 
-import com.example.creationtablesserver.model.DTO.TableDTO;
+import com.example.creationtablesserver.model.table.DTO.TableDTO;
 
 public interface TableDAO {
         boolean create (TableDTO table);

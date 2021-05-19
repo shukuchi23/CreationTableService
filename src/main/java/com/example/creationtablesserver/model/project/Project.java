@@ -1,0 +1,93 @@
+package com.example.creationtablesserver.model.project;
+
+import com.example.creationtablesserver.model.Database;
+import com.example.creationtablesserver.model.table.META.TableMeta;
+import com.example.creationtablesserver.model.table.META.embeddable.ProjectId;
+import com.example.creationtablesserver.model.user.AuthorityUser;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@Entity
+@Table(name = "project_meta", schema = "tech")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Project implements Serializable {
+
+    /*@Id
+    @SequenceGenerator(name = "project_id_seq",
+            schema = "tech", sequenceName = "project_id_seq", allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_id_seq")
+    private Long proj_id;*/
+
+    @EmbeddedId
+    private ProjectId projectId;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+//    @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
+    @MapsId("owner_id")
+    private AuthorityUser owner;
+
+    @Column(name = "project_name")
+    @NonNull
+    private String proj_name;
+
+    @OneToMany(mappedBy = "project",
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TableMeta> tables = new LinkedList<>();
+
+    /*TODO: проверить можно ли получить таблицу без stream  */
+    public TableMeta findTableById(Long id) {
+        return tables.stream().filter(t->t.getTable_id().getTable_id().equals(id)).findFirst().get();
+        // tables.get(id+1) ?
+    }
+    /*@ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+    private AuthorityUser owner;*/
+
+    @Enumerated(value = EnumType.ORDINAL)
+    @Column(name = "database")
+    @NonNull
+    private Database database;
+
+    public void addTable(TableMeta tableMeta) {
+        tables.add(tableMeta);
+        tableMeta.setProject(this);
+    }
+    public void removeTable(TableMeta tableMeta){
+        tables.remove(tableMeta);
+        tableMeta.setProject(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project that = (Project) o;
+        if (projectId == null)
+            return false;
+        else
+            return (projectId.equals(that.projectId));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectId);
+    }
+
+    public Project() {
+        
+    }
+}

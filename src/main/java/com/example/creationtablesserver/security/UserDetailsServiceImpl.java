@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.security;
 
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        AuthorityUser authorityUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User doesn't exists"));
-        return SecurityUser.fromUser(user);
+        return SecurityUser.fromUser(authorityUser);
     }
 }

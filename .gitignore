@@ -29,8 +29,8 @@ out/
 ### VS Code ###
 .vscode/
 /.gradle/
-### Example user template template
-### Example user template
+### Example authorityUser template template
+### Example authorityUser template
 
 # IntelliJ project files
 out

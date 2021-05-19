@@ -1,7 +1,7 @@
 package com.example.creationtablesserver.security;
 
-import com.example.creationtablesserver.model.Role;
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.user.Role;
+import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.service.UserService;
 import com.example.creationtablesserver.utils.AuthenticationResolver;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class SecurityChecker {
         this.userService = userService;
     }
 
-    public boolean checkUserId(Long id, User requester) {
+    public boolean checkUserId(Long id, AuthorityUser requester) {
         if (requester.getUser_id().equals(id))
             return true;
         return requester.getRole() == Role.ADMIN;
@@ -27,7 +27,7 @@ public class SecurityChecker {
         return checkUserId(id, getCurrentUser());
     }
 
-    private User getCurrentUser() {
+    private AuthorityUser getCurrentUser() {
         return resolver.getUser();
     }
 }

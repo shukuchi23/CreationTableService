@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.utils;
 
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,13 +18,13 @@ public class AuthenticationResolverImpl implements AuthenticationResolver{
     }
 
     @Override
-    public User getUser() {
+    public AuthorityUser getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return getUser(authentication);
     }
 
     @Override
-    public User getUser(Authentication authentication) throws AuthenticationResolveException {
+    public AuthorityUser getUser(Authentication authentication) throws AuthenticationResolveException {
         if (authentication == null) {
             throw new BadCredentialsException("No credentials presented");
         }

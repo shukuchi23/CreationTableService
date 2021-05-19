@@ -1,36 +1,49 @@
 package com.example.creationtablesserver.rest;
 
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.project.DTO.ProjectDTO;
+import com.example.creationtablesserver.model.utils.ProjectMapper;
+import com.example.creationtablesserver.model.user.AuthorityUser;
+import com.example.creationtablesserver.model.user.DTO.UserDTO;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional
-@RequestMapping("/users")
 public class UserRestController {
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     /* TODO: добавить доступ админу*/
-    @GetMapping()
-    public List<User> getAllUsers() {
-        return service.getAll();
+    @GetMapping("/users")
+    public List<UserDTO> getAllUsers() {
+        return userService.getAll()
+                .stream()
+                .map(UserDTO::fromAuthorityUser)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id{id}")
     @PreAuthorize("@securityChecker.checkUserId(#id)")
-    public User getById(@PathVariable Long id) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        return service.getById(id);
+    public UserDTO getById(@PathVariable Long id) {
+        AuthorityUser user = userService.getById(id);
+        return UserDTO.fromAuthorityUser(user);
+    }
+
+    @PostMapping("/id{id}/create")
+    @PreAuthorize("@securityChecker.checkUserId(#id)")
+    public ResponseEntity<String> createProject(@PathVariable Long id , @RequestBody ProjectDTO project){
+        AuthorityUser user = userService.getById(id);
+        user.addProject(ProjectMapper.MetaFromDto(project, id));
+        userService.updateUser(user);
+        return new ResponseEntity<>("nice", HttpStatus.OK);
     }
 
 }

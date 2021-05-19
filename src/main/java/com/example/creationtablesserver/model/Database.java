@@ -1,9 +1,9 @@
 package com.example.creationtablesserver.model;
 
 public enum Database {
-    PSQL("psql"),
-    MYSQL("mysql"),
-    ORACLE("oracle");
+    PSQL("PostgreSQL"),
+    MYSQL("MySQL"),
+    ORACLE("Oracle");
 
     Database(String database) {
         this.database = database;
