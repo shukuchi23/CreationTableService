@@ -1,9 +1,9 @@
 package com.example.creationtablesserver.dao.table;
 
-import com.example.creationtablesserver.model.DTO.ColumnDTO;
-import com.example.creationtablesserver.model.DTO.ForeignKey;
-import com.example.creationtablesserver.model.DTO.PrimaryKey;
-import com.example.creationtablesserver.model.DTO.TableDTO;
+import com.example.creationtablesserver.model.table.DTO.ColumnDTO;
+import com.example.creationtablesserver.model.table.DTO.ForeignKey;
+import com.example.creationtablesserver.model.table.DTO.PrimaryKey;
+import com.example.creationtablesserver.model.table.DTO.TableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -77,13 +77,13 @@ public class TableDAOImpl implements TableDAO {
                                 /*Если уже есть запись в nameSet, значит внешних ключей несколько*/
                                 if (!nameSet.isEmpty())
                                                 str.append(", ");
-                                nameSet.add(fkey.getReferenceTable());
+                                nameSet.add(fkey.getReferenceTable().toString());
                                 StringBuilder prefix = new StringBuilder().append("FOREIGN KEY (");
                                 StringBuilder suffix = new StringBuilder().append("REFERENCES ").append(fkey.getReferenceTable())
                                                                                 .append(" (");
                                 /*--- Внешний ключ может быть композитный ---*/
                                 /*Столбцы ссылающиеся на таблицу*/
-                                List<ForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable(), fkeys.iterator());
+                                List<ForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable().toString(), fkeys.iterator());
                                 Iterator<ForeignKey> rtc_iter = referenceTableColumn.iterator();
 
                                 ForeignKey fk = rtc_iter.next();

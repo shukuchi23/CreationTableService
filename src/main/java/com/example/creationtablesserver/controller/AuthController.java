@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.controller;
 
-import com.example.creationtablesserver.model.User;
+import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,16 +24,16 @@ public class AuthController {
     }
 
     @GetMapping("/join")
-    public String getJoin(@ModelAttribute("user") User user) {
+    public String getJoin(@ModelAttribute("user") AuthorityUser authorityUser) {
         return "join";
     }
 
     @PostMapping("/join")
-    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String createUser(@ModelAttribute("user") @Valid AuthorityUser authorityUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "/join";
 
-        service.join_user(user);
+        service.join_user(authorityUser);
         return "redirect:/users";
     }
 

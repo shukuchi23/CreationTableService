@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.model;
+package com.example.creationtablesserver.model.user;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

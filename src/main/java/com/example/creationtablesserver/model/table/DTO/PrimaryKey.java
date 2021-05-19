@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.model.DTO;
+package com.example.creationtablesserver.model.table.DTO;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,8 +17,8 @@ public class PrimaryKey implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-                if (o != null && o instanceof String)
-                        return key.equals((String) o);
+                if (o instanceof String)
+                        return key.equals(o);
                 if (o == null || getClass() != o.getClass()) return false;
                 PrimaryKey that = (PrimaryKey) o;
                 return key.equals(that.key);
