@@ -1,9 +1,9 @@
 package com.example.creationtablesserver.rest;
 
 import com.example.creationtablesserver.model.project.DTO.ProjectDTO;
-import com.example.creationtablesserver.model.utils.ProjectMapper;
 import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.model.user.DTO.UserDTO;
+import com.example.creationtablesserver.model.utils.ProjectMapper;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,5 +45,6 @@ public class UserRestController {
         userService.updateUser(user);
         return new ResponseEntity<>("nice", HttpStatus.OK);
     }
+
 
 }

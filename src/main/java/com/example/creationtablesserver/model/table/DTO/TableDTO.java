@@ -24,7 +24,7 @@ public class TableDTO {
     public static class NormalTableDto {
         private String name;
         private Long tableId;  // относительно проекта
-        private List<ColumnDTO.ColumnDtoWithPkAndFkField> columns = new LinkedList<>();
+        public List<ColumnDTO.ColumnDtoWithPkAndFkField> columns = new LinkedList<>();
 
         public NormalTableDto(TableDTO origin) {
             this.name = origin.name;
