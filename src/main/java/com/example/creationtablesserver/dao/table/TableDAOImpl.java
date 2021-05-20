@@ -53,8 +53,8 @@ public class TableDAOImpl implements TableDAO {
         }
         private StringBuilder pkeyToSql(Iterator<PrimaryKey> pkey_iter) {
                 StringBuilder str = new StringBuilder("primary key ( ");
-                PrimaryKey pkey = pkey_iter.next();
 
+                PrimaryKey pkey = pkey_iter.next();
                 str.append(pkey.getKey());
                 while (pkey_iter.hasNext()) {
                         pkey = pkey_iter.next();
@@ -65,12 +65,14 @@ public class TableDAOImpl implements TableDAO {
 //                primary key (key1, key2, ...)
         }
         private StringBuilder fkeyToSql(List <ForeignKey> fkeys) {
+
                 StringBuilder str = new StringBuilder();
                 
                 /*Встречаемые referenceTable  в списке ForeignKey*/
                 Set<String > nameSet = new HashSet<>();
 
                 Iterator<ForeignKey> fkey_iter = fkeys.iterator();
+                // TODO: ну да. Тут пахнет говной
                 while (fkey_iter.hasNext()) {
                         ForeignKey fkey = fkey_iter.next();
                         if (!nameSet.contains(fkey.getReferenceTable())) {

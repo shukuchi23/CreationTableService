@@ -10,9 +10,9 @@ public class ColumnDTO {
         private String type ;
 
         public ColumnDtoWithPkAndFkField withPkAndFkFields(){
-                ColumnDtoWithPkAndFkField upgrade = new ColumnDtoWithPkAndFkField(this);
-                return upgrade;
+                return new ColumnDtoWithPkAndFkField(this);
         }
+
         @Getter @Setter
         public static class ColumnDtoWithPkAndFkField extends ColumnDTO{
                 private boolean primary = false;
@@ -21,12 +21,12 @@ public class ColumnDTO {
                 private Boolean multiple = null;
 
                 public ColumnDtoWithPkAndFkField(ColumnDTO origin){
-                        super();
                         this.setColumnName(origin.getColumnName());
                         this.setType(origin.getType());
                 }
 
         }
+
         public ColumnDTO() {}
 
 }
