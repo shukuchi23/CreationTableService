@@ -39,7 +39,7 @@ public class ProjectMapper {
             for(ColumnDTO.ColumnDtoWithPkAndFkField columnDto : table.getColumns()) {
                 ColumnMeta columnMeta = new ColumnMeta();
                 columnMeta.setColumn_name(columnDto.getColumnName());
-                columnMeta.setColumn_type(columnDto.getType());
+                columnMeta.setColumn_type(columnDto.getColumnType());
                 columnMeta.setCoolTable(tableMeta);
                 columnMeta.setPr_key(columnDto.isPrimary());
                 columns.add(columnMeta);

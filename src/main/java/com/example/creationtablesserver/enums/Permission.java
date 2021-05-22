@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.model.user;
+package com.example.creationtablesserver.enums;
 
 public enum Permission {
     USER_CRUD_TABLE("user:crud"),

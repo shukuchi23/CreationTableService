@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.model.user;
+package com.example.creationtablesserver.enums;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -18,41 +18,42 @@ import java.util.Optional;
 @Service("userService")
 @AllArgsConstructor
 public class UserService {
-    private UserRepository repository;
+    @Autowired
+    private UserRepository userRepository;
 
-    @Qualifier(value = "passwordEncoder")
-    private PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public List<AuthorityUser> getAll() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
     @Transactional
     public void join_user(@NonNull AuthorityUser authorityUser) {
         // TODO: добавить ошибку существующего пользователя
         // шифруем пароль перед сохранением
-        authorityUser.setPassword(encoder.encode(authorityUser.getPassword()));
-        repository.save(authorityUser);
+        authorityUser.setPassword(passwordEncoder.encode(authorityUser.getPassword()));
+        userRepository.save(authorityUser);
     }
     @Transactional
     public void updateUser(@NonNull AuthorityUser authorityUser) {
-        repository.save(authorityUser);
+        userRepository.save(authorityUser);
     }
 
     @Transactional
     public AuthorityUser getById(Long id) {
-        return repository.findById(id).get();
+        return userRepository.findById(id).get();
     }
 
     @Transactional
     public Optional<AuthorityUser> getByUsername(String username) {
-        return repository.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     @Transactional
     public long getAmount() {
-        return repository.count();
+        return userRepository.count();
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.creationtablesserver.model.user;
 
+import com.example.creationtablesserver.enums.Role;
 import com.example.creationtablesserver.model.project.Project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
