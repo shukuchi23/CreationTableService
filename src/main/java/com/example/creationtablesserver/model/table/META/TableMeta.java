@@ -3,7 +3,9 @@ package com.example.creationtablesserver.model.table.META;
 import com.example.creationtablesserver.model.project.Project;
 import com.example.creationtablesserver.model.table.META.embeddable.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter

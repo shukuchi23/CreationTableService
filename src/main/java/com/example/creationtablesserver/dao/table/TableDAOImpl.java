@@ -22,10 +22,11 @@ public class TableDAOImpl implements TableDAO {
 
         @Override
         public boolean create(TableDTO table) {
+                TableDTO.NormalTableDto normalVersion = table.getNormalVersion();
 
                 StringBuilder str = new StringBuilder("create table if not exists ");
-                str.append(table.getName()).append(" ( ");
-                str.append(columnToSql(table.getColumns().iterator()));
+                str.append(normalVersion.getName()).append(" ( ");
+                str.append(columnToSql(normalVersion.getColumns().iterator()));
 
                 if (table.getPrimaryKeys() != null)
                         if (!table.getPrimaryKeys().isEmpty())
@@ -40,7 +41,18 @@ public class TableDAOImpl implements TableDAO {
 
                 return true;
         }
-        private StringBuilder columnToSql(Iterator<ColumnDTO> col_iter) {
+        private StringBuilder columnToSql(Iterator<ColumnDTO.ColumnDtoWithPkAndFkField> colIter){
+                StringBuilder str = new StringBuilder();
+                ColumnDTO.ColumnDtoWithPkAndFkField column = colIter.next();
+                str.append(String.format("%s %s", column.getColumnName(), column.getColumnType()));
+
+                while (colIter.hasNext()) {
+                        column = colIter.next();
+                        str.append(String.format(", %s %s", column.getColumnName(), column.getColumnType()));
+                }
+                return str;
+        }
+        /*private StringBuilder columnToSql(Iterator<ColumnDTO> col_iter) {
                 StringBuilder str = new StringBuilder();
                 ColumnDTO column = col_iter.next();
 
@@ -50,7 +62,7 @@ public class TableDAOImpl implements TableDAO {
                         str.append(", ").append(column.getColumnName()).append(' ').append(column.getType());
                 }
                 return str;
-        }
+        }*/
         private StringBuilder pkeyToSql(Iterator<PrimaryKey> pkey_iter) {
                 StringBuilder str = new StringBuilder("primary key ( ");
 

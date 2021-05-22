@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.security;
 
-import com.example.creationtablesserver.model.user.Role;
+import com.example.creationtablesserver.enums.Role;
 import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.service.UserService;
 import com.example.creationtablesserver.utils.AuthenticationResolver;

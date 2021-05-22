@@ -14,10 +14,10 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Embeddable
 public class ProjectId implements Serializable {
-    @Column(name = "project_id")
+//    @Column(name = "project_id")
     private Long project_id;
 
-    @Column(name = "owner_id")
+//    @Column(name = "owner_id")
     private Long owner_id;
 
     public ProjectId(){}

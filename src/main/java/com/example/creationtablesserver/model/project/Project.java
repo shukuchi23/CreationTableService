@@ -1,6 +1,7 @@
 package com.example.creationtablesserver.model.project;
 
-import com.example.creationtablesserver.model.Database;
+import com.example.creationtablesserver.enums.Database;
+import com.example.creationtablesserver.enums.DatabaseConverter;
 import com.example.creationtablesserver.model.table.META.TableMeta;
 import com.example.creationtablesserver.model.table.META.embeddable.ProjectId;
 import com.example.creationtablesserver.model.user.AuthorityUser;
@@ -36,13 +37,12 @@ public class Project implements Serializable {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-//    @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
     @MapsId("owner_id")
     private AuthorityUser owner;
 
     @Column(name = "project_name")
     @NonNull
-    private String proj_name;
+    private String projectName;
 
     @OneToMany(mappedBy = "project",
             fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,13 +53,9 @@ public class Project implements Serializable {
         return tables.stream().filter(t->t.getTable_id().getTable_id().equals(id)).findFirst().get();
         // tables.get(id+1) ?
     }
-    /*@ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id")
-    private AuthorityUser owner;*/
 
-    @Enumerated(value = EnumType.ORDINAL)
-    @Column(name = "database")
     @NonNull
+    @Convert(converter = DatabaseConverter.class)
     private Database database;
 
     public void addTable(TableMeta tableMeta) {

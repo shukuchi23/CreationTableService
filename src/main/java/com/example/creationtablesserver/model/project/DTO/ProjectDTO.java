@@ -17,6 +17,13 @@ public class ProjectDTO extends ShortProjectDTO{
 
     // TODO: написать
     public static ProjectDTO fromProject(Project project) {
-        return null;
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setProjId(project.getProjectId().getProject_id());
+        projectDTO.setProjName(project.getProj_name());
+        projectDTO.setDatabase(project.getDatabase());
+
+//        projectDTO.setTables();
+        projectDTO.setLogin(project.getOwner().getUsername());
+        return projectDTO;
     }
 }

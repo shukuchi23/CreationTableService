@@ -65,19 +65,5 @@ public class TableDTO {
     public TableDTO() {
     }
 
-    /*Геттеры, Сеттеры*/
-
-    /*public ForeignKey findFkeyByColumn(String column) {
-        return foreignKeys.stream()
-                .filter(f -> f.getName().equals(column))
-                .findFirst().get();
-                *//*if (foreignKeys != null) {
-                        for (ForeignKey fk : foreignKeys) {
-                                if (fk.getName().equals(column))
-                                        return fk;
-                        }
-                }
-                return null;*//*
-    }*/
 
 }

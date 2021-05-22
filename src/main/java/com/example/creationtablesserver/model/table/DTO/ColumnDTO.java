@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 public class ColumnDTO {
         private String columnName ;
-        private String type ;
+        private String columnType;
 
         public ColumnDtoWithPkAndFkField withPkAndFkFields(){
                 return new ColumnDtoWithPkAndFkField(this);
@@ -22,7 +22,7 @@ public class ColumnDTO {
 
                 public ColumnDtoWithPkAndFkField(ColumnDTO origin){
                         this.setColumnName(origin.getColumnName());
-                        this.setType(origin.getType());
+                        this.setColumnType(origin.getColumnType());
                 }
 
         }

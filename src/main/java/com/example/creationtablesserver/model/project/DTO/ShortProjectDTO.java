@@ -1,6 +1,6 @@
 package com.example.creationtablesserver.model.project.DTO;
 
-import com.example.creationtablesserver.model.Database;
+import com.example.creationtablesserver.enums.Database;
 import com.example.creationtablesserver.model.project.Project;
 import lombok.Data;
 
