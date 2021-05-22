@@ -19,7 +19,7 @@ public class ProjectDTO extends ShortProjectDTO{
     public static ProjectDTO fromProject(Project project) {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setProjId(project.getProjectId().getProject_id());
-        projectDTO.setProjName(project.getProj_name());
+        projectDTO.setProjName(project.getProjectName());
         projectDTO.setDatabase(project.getDatabase());
 
 //        projectDTO.setTables();

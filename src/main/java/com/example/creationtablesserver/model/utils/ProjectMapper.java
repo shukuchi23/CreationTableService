@@ -20,7 +20,7 @@ public class ProjectMapper {
         Project metaProject = new Project();
         metaProject.setProjectId(new ProjectId(dtoProject.getProjId(), owner_id));
         metaProject.setDatabase(dtoProject.getDatabase());
-        metaProject.setProj_name(dtoProject.getProjName());
+        metaProject.setProjectName(dtoProject.getProjName());
 
         List<TableDTO.NormalTableDto> dtoTables = dtoProject
                 .getTables().stream()
