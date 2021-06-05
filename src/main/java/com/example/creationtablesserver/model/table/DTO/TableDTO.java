@@ -2,12 +2,13 @@ package com.example.creationtablesserver.model.table.DTO;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
-public class TableDTO {
+public class TableDTO implements Serializable {
     private Long tableId;  // относительно проекта
     private String name;
 

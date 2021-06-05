@@ -16,14 +16,17 @@ public class ProjectDTO extends ShortProjectDTO{
     private List<TableDTO> tables;
 
     // TODO: написать
-    public static ProjectDTO fromProject(Project project) {
+    public static ProjectDTO fromEntity(Project project) {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setProjId(project.getProjectId().getProject_id());
+        projectDTO.setProjId(project.getProjectId());
         projectDTO.setProjName(project.getProjectName());
         projectDTO.setDatabase(project.getDatabase());
 
-//        projectDTO.setTables();
         projectDTO.setLogin(project.getOwner().getUsername());
         return projectDTO;
+    }
+
+    public TableDTO findById (long id){
+        return tables.stream().filter(t -> t.getTableId().equals(id)).findFirst().get();
     }
 }

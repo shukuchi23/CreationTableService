@@ -36,10 +36,6 @@ public class UserService {
         authorityUser.setPassword(passwordEncoder.encode(authorityUser.getPassword()));
         userRepository.save(authorityUser);
     }
-    @Transactional
-    public void updateUser(@NonNull AuthorityUser authorityUser) {
-        userRepository.save(authorityUser);
-    }
 
     @Transactional
     public AuthorityUser getById(Long id) {

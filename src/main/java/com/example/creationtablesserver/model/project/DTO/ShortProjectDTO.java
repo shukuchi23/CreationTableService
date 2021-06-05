@@ -14,7 +14,7 @@ public class ShortProjectDTO {
         ShortProjectDTO dto = new ShortProjectDTO();
 
         dto.setDatabase(project.getDatabase());
-        dto.setProjId(project.getProjectId().getProject_id());
+        dto.setProjId(project.getProjectId());
         dto.setProjName(project.getProjectName());
 
         return dto;
