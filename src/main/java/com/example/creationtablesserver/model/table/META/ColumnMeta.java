@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,9 +19,6 @@ import java.util.Objects;
 @Table(name = "column_meta", schema = "tech")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ColumnMeta implements Serializable {
-
-    //        @EmbeddedId
-//        private ColumnId column_id;
     @Id
     @SequenceGenerator(name = "column_id_seq",
             schema = "tech", sequenceName = "column_id_seq", allocationSize = 1
@@ -32,20 +30,27 @@ public class ColumnMeta implements Serializable {
     @Column(name = "column_type")
     private String column_type;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "table_id", referencedColumnName = "table_id"),
-            @JoinColumn(name = "project_id", referencedColumnName = "project_id"),
-            @JoinColumn(name = "owner_id", referencedColumnName = "owner_id"),
-    })
-//        @ManyToOne
+    @JoinColumn(name = "table_id")
     private TableMeta coolTable;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_id")
+    @OneToOne(mappedBy = "owner"
+            ,fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private FkeyMeta fkey;
 
+
+    public void setReference(FkeyMeta fkey){
+        if (fkey == null){
+            if (this.fkey != null) {
+                this.fkey.setOwner(null);
+            }
+        }
+        else
+            fkey.setOwner(this);
+        this.fkey=fkey;
+    }
 
     private Boolean pr_key;
 
@@ -62,15 +67,6 @@ public class ColumnMeta implements Serializable {
     public void toUpdate() {
         setUpdate_date(LocalDateTime.now());
     }
-
-//        public ColumnId getColumn_pk() {
-//                return column_pk;
-//        }
-
-//        public void setColumn_pk(ColumnId column_pk) {
-//                this.column_pk = column_pk;
-//        }
-
 
     @Override
     public boolean equals(Object o) {
@@ -101,15 +97,4 @@ public class ColumnMeta implements Serializable {
     public ColumnMeta() {
     }
 
-    public ColumnMeta(String column_name, String column_type, Boolean pr_key) {
-        this.column_name = column_name;
-        this.column_type = column_type;
-        this.pr_key = pr_key;
-    }
-
-    public ColumnMeta(String column_name, String column_type, TableMeta coolTable) {
-        this.column_name = column_name;
-        this.column_type = column_type;
-        this.coolTable = coolTable;
-    }
 }

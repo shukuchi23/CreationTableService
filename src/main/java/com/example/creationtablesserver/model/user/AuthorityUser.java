@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -61,7 +62,16 @@ public class AuthorityUser implements Serializable {
         projectList.remove(project);
         project.setOwner(null);
     }
-
+    public void removeProject (Long project_id) {
+        getProjectById(project_id).ifPresent(this::removeProject);
+        // TODO: добавить исключение "Пользователь не имеет проекта с таким id"
+    }
+    public Optional<Project> getProjectById(Long project_id){
+        return projectList
+                .stream()
+                .filter(p -> p.getProjectId().equals(project_id))
+                .findFirst();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

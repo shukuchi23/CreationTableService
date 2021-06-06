@@ -1,7 +1,6 @@
 package com.example.creationtablesserver.model.table.META;
 
 import com.example.creationtablesserver.model.project.Project;
-import com.example.creationtablesserver.model.table.META.embeddable.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,22 +21,16 @@ import java.util.Objects;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TableMeta implements Serializable {
     //        -- FIELD---
-        /*@Id
-        @SequenceGenerator(name = "table_id_seq",
-                schema = "tech", sequenceName = "table_id_seq", allocationSize = 1
-        )
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "table_id_seq")
-        private Long table_id;*/
+    @Id
+    @SequenceGenerator(name = "table_id_seq",
+            schema = "tech", sequenceName = "table_id_seq", allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "table_id_seq")
+    private Long table_id;
 
-    @EmbeddedId
-    private TableId table_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("projectId")
-    @JoinColumns({
-            @JoinColumn(name = "project_id", referencedColumnName = "project_id"),
-            @JoinColumn(name = "owner_id", referencedColumnName = "owner_id"),
-    })
+    @JoinColumn(name = "project_id")
     private Project project;
 
     private String table_name;
@@ -52,6 +45,7 @@ public class TableMeta implements Serializable {
     public ColumnMeta findColumnByName(String name) {
         return columns.stream().filter(c -> c.getColumn_name().equals(name)).findFirst().get();
     }
+
     public void addColumn(ColumnMeta columnMeta) {
         columns.add(columnMeta);
         columnMeta.setCoolTable(this);
@@ -95,8 +89,8 @@ public class TableMeta implements Serializable {
     @Override
     public String toString() {
         return "\nTableMeta{" +
-                "project_id='" + table_id.getProjectId().getProject_id() + '\'' +
-                "table_id='" + table_id.getTable_id() + '\'' +
+                "project_id='" + project.getProjectId() + '\'' +
+                "table_id='" + table_id + '\'' +
                 "table_name='" + table_name + '\'' +
                 ", create_date=" + create_date +
                 ", update_date=" + update_date +

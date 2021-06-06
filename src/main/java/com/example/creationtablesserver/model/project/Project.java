@@ -3,7 +3,6 @@ package com.example.creationtablesserver.model.project;
 import com.example.creationtablesserver.enums.Database;
 import com.example.creationtablesserver.enums.DatabaseConverter;
 import com.example.creationtablesserver.model.table.META.TableMeta;
-import com.example.creationtablesserver.model.table.META.embeddable.ProjectId;
 import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -25,19 +24,16 @@ import java.util.Objects;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project implements Serializable {
 
-    /*@Id
+    @Id
     @SequenceGenerator(name = "project_id_seq",
             schema = "tech", sequenceName = "project_id_seq", allocationSize = 1
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_id_seq")
-    private Long proj_id;*/
+    private Long projectId;
 
-    @EmbeddedId
-    private ProjectId projectId;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    @MapsId("owner_id")
     private AuthorityUser owner;
 
     @Column(name = "project_name")
@@ -47,12 +43,6 @@ public class Project implements Serializable {
     @OneToMany(mappedBy = "project",
             fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TableMeta> tables = new LinkedList<>();
-
-    /*TODO: проверить можно ли получить таблицу без stream  */
-    public TableMeta findTableById(Long id) {
-        return tables.stream().filter(t->t.getTable_id().getTable_id().equals(id)).findFirst().get();
-        // tables.get(id+1) ?
-    }
 
     @NonNull
     @Convert(converter = DatabaseConverter.class)

@@ -1,8 +1,7 @@
 package com.example.creationtablesserver.dao.table;
 
-import com.example.creationtablesserver.model.table.DTO.ColumnDTO;
 import com.example.creationtablesserver.model.table.DTO.ForeignKey;
-import com.example.creationtablesserver.model.table.DTO.PrimaryKey;
+import com.example.creationtablesserver.model.table.DTO.OldTableDTO;
 import com.example.creationtablesserver.model.table.DTO.TableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,131 +12,142 @@ import java.util.*;
 
 @Component
 public class TableDAOImpl implements TableDAO {
-        JdbcTemplate jdbcTemplate;
+    JdbcTemplate jdbcTemplate;
 
-        @Autowired
-        public TableDAOImpl(DataSource dataSource) {
-                this.jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public TableDAOImpl(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    /*@Override
+    public TableMeta getMetaTablesFromScheme(String scheme) throws SQLException {
+        DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
+        // TODO: написать что-то
+        return null;
+    }
+
+    @Override
+    public void getMeta() throws SQLException {
+
+
+        DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
+        metaData.getUserName()
+        ResultSet tables = metaData.getTables(null, "tech", "%", new String[]{"TABLE"});
+        while (tables.next()){
+            metaData.getTables()
+            ResultSet primaryKeys = metaData.getPrimaryKeys(null, "tech", tables.getString("TABLE_NAME"));
+            while (primaryKeys.next()) {
+                jdbcTemplate.getDataSource().getConnection().getClientInfo()
+                System.out.printf("table: %s, pk[%s]: %s\n",
+                        primaryKeys.getString("TABLE_NAME"),
+                        primaryKeys.getInt("KEY_SEQ"),
+                        primaryKeys.getString("COLUMN_NAME"));
+            *//*
+            );*//*
+            }
         }
+    }*/
 
-        @Override
-        public boolean create(TableDTO table) {
-                TableDTO.NormalTableDto normalVersion = table.getNormalVersion();
+    /*@Override
+    public boolean create(TableDTO table) {
+        TableDTO.NormalTableDto normalVersion = table.getNormalVersion();
+        StringBuilder str = new StringBuilder("create table if not exists ");
+        str.append(normalVersion.getName()).append(" ( ");
+        str.append(columnToSql(normalVersion.getColumns().iterator()));
 
-                StringBuilder str = new StringBuilder("create table if not exists ");
-                str.append(normalVersion.getName()).append(" ( ");
-                str.append(columnToSql(normalVersion.getColumns().iterator()));
+        if (table.getPrimaryKeys() != null)
+            if (!table.getPrimaryKeys().isEmpty())
+                str.append(", ").append(pkeyToSql(table.getPrimaryKeys().iterator()));
 
-                if (table.getPrimaryKeys() != null)
-                        if (!table.getPrimaryKeys().isEmpty())
-                                str.append(", ").append(pkeyToSql(table.getPrimaryKeys().iterator()));
+        if (table.getForeignKeys() != null)
+            if (!table.getForeignKeys().isEmpty())
+                str.append(", ").append(fkeyToSql(table.getForeignKeys()));
 
-                if (table.getForeignKeys() != null)
-                        if (!table.getForeignKeys().isEmpty())
-                                str.append(", ").append(fkeyToSql(table.getForeignKeys()));
+        str.append(");");
+        jdbcTemplate.execute(str.toString());
 
-                str.append(");");
-                jdbcTemplate.execute(str.toString());
+        return true;
+    }*/
 
-                return true;
-        }
-        private StringBuilder columnToSql(Iterator<ColumnDTO.ColumnDtoWithPkAndFkField> colIter){
-                StringBuilder str = new StringBuilder();
-                ColumnDTO.ColumnDtoWithPkAndFkField column = colIter.next();
-                str.append(String.format("%s %s", column.getColumnName(), column.getColumnType()));
+    /*private StringBuilder columnToSql(Iterator<ColumnDTO> col_iter) {
+            StringBuilder str = new StringBuilder();
+            ColumnDTO column = col_iter.next();
 
-                while (colIter.hasNext()) {
-                        column = colIter.next();
-                        str.append(String.format(", %s %s", column.getColumnName(), column.getColumnType()));
+            str.append(column.getColumnName()).append(' ').append(column.getType());
+            while (col_iter.hasNext()) {
+                    column = col_iter.next();
+                    str.append(", ").append(column.getColumnName()).append(' ').append(column.getType());
+            }
+            return str;
+    }*/
+
+
+    private StringBuilder fkeyToSql(List<ForeignKey> fkeys) {
+
+        StringBuilder str = new StringBuilder();
+
+        /*Встречаемые referenceTable  в списке ForeignKey*/
+        Set<Long> nameSet = new HashSet<>();
+
+        Iterator<ForeignKey> fkey_iter = fkeys.iterator();
+        // TODO: ну да. Тут пахнет говной
+        while (fkey_iter.hasNext()) {
+            ForeignKey fkey = fkey_iter.next();
+            if (!nameSet.contains(fkey.getReferenceTable())) {
+                /*Если уже есть запись в nameSet, значит внешних ключей несколько*/
+                if (!nameSet.isEmpty())
+                    str.append(", ");
+                nameSet.add(fkey.getReferenceTable());
+                StringBuilder prefix = new StringBuilder().append("FOREIGN KEY (");
+                StringBuilder suffix = new StringBuilder().append("REFERENCES ").append(fkey.getReferenceTable())
+                        .append(" (");
+                /*--- Внешний ключ может быть композитный ---*/
+                /*Столбцы ссылающиеся на таблицу*/
+                List<ForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable(), fkeys.iterator());
+                Iterator<ForeignKey> rtc_iter = referenceTableColumn.iterator();
+
+                ForeignKey fk = rtc_iter.next();
+                prefix.append(fk.getName());
+                suffix.append(fk.getKey());
+                while (rtc_iter.hasNext()) {
+                    fk = rtc_iter.next();
+                    prefix.append(", ").append(fk.getName());
+                    suffix.append(", ").append(fk.getKey());
                 }
-                return str;
+                prefix.append(") ");
+                suffix.append(")");
+
+                str.append(prefix).append(suffix);
+            }
         }
-        /*private StringBuilder columnToSql(Iterator<ColumnDTO> col_iter) {
-                StringBuilder str = new StringBuilder();
-                ColumnDTO column = col_iter.next();
+        return str;
+    }
 
-                str.append(column.getColumnName()).append(' ').append(column.getType());
-                while (col_iter.hasNext()) {
-                        column = col_iter.next();
-                        str.append(", ").append(column.getColumnName()).append(' ').append(column.getType());
-                }
-                return str;
-        }*/
-        private StringBuilder pkeyToSql(Iterator<PrimaryKey> pkey_iter) {
-                StringBuilder str = new StringBuilder("primary key ( ");
-
-                PrimaryKey pkey = pkey_iter.next();
-                str.append(pkey.getKey());
-                while (pkey_iter.hasNext()) {
-                        pkey = pkey_iter.next();
-                        str.append(", ").append(pkey.getKey());
-                }
-                str.append(')');
-                return str;
-//                primary key (key1, key2, ...)
+    /*Возвращает все объекты Foreign Key с полем
+            'referenceTable' равным refTable */
+    private List<ForeignKey> getAllFkeysByRefTable(Long refTable, Iterator<ForeignKey> fkey_iter) {
+        List<ForeignKey> keys = new LinkedList<>();
+        ForeignKey tmp;
+        while (fkey_iter.hasNext()) {
+            tmp = fkey_iter.next();
+            if (tmp.getReferenceTable().equals(refTable))
+                keys.add(tmp);
         }
-        private StringBuilder fkeyToSql(List <ForeignKey> fkeys) {
+        return keys;
+    }
 
-                StringBuilder str = new StringBuilder();
-                
-                /*Встречаемые referenceTable  в списке ForeignKey*/
-                Set<String > nameSet = new HashSet<>();
+    @Override
+    public void create(OldTableDTO table) {
+    }
 
-                Iterator<ForeignKey> fkey_iter = fkeys.iterator();
-                // TODO: ну да. Тут пахнет говной
-                while (fkey_iter.hasNext()) {
-                        ForeignKey fkey = fkey_iter.next();
-                        if (!nameSet.contains(fkey.getReferenceTable())) {
-                                /*Если уже есть запись в nameSet, значит внешних ключей несколько*/
-                                if (!nameSet.isEmpty())
-                                                str.append(", ");
-                                nameSet.add(fkey.getReferenceTable().toString());
-                                StringBuilder prefix = new StringBuilder().append("FOREIGN KEY (");
-                                StringBuilder suffix = new StringBuilder().append("REFERENCES ").append(fkey.getReferenceTable())
-                                                                                .append(" (");
-                                /*--- Внешний ключ может быть композитный ---*/
-                                /*Столбцы ссылающиеся на таблицу*/
-                                List<ForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable().toString(), fkeys.iterator());
-                                Iterator<ForeignKey> rtc_iter = referenceTableColumn.iterator();
+    @Override
+    public boolean update(TableDTO table) {
 
-                                ForeignKey fk = rtc_iter.next();
-                                prefix.append(fk.getName());
-                                suffix.append(fk.getKey());
-                                while (rtc_iter.hasNext()) {
-                                        fk = rtc_iter.next();
-                                        prefix.append(", ").append(fk.getName());
-                                        suffix.append(", ").append(fk.getKey());
-                                }
-                                prefix.append(") ");
-                                suffix.append(")");
+        return false;
+    }
 
-                                str.append(prefix).append(suffix);
-                        }
-                }
-                return str;
-        }
-        /*Возвращает все объекты Foreign Key с полем 
-                'referenceTable' равным refTable */
-        private List<ForeignKey> getAllFkeysByRefTable(String refTable, Iterator<ForeignKey> fkey_iter ) {
-                List<ForeignKey> keys = new LinkedList<>();
-                ForeignKey tmp;
-                while (fkey_iter.hasNext()) {
-                        tmp = fkey_iter.next();
-                        if (tmp.getReferenceTable().equals(refTable))
-                                keys.add(tmp);
-                }
-                return keys;
-        }
-
-        @Override
-        public boolean update(TableDTO table) {
-
-                return false;
-        }
-
-        @Override
-        public boolean delete(String tableName) {
-                jdbcTemplate.execute(new Formatter().format("drop table if exists %s ;", tableName).toString());
-                return true;
-        }
+    @Override
+    public void delete(String tableName) {
+        jdbcTemplate.execute(new Formatter().format("drop table if exists %s ;", tableName).toString());
+    }
 }

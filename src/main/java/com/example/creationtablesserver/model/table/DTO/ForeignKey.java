@@ -1,10 +1,14 @@
 package com.example.creationtablesserver.model.table.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ForeignKey implements Serializable {
         private String name;
         private String key;

@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -13,24 +15,26 @@ import java.util.Objects;
 @Entity
 @Table(name = "fkeys", schema = "tech")
 public class FkeyMeta implements Serializable {
-    @Id
-    @SequenceGenerator(name = "fkey_id_seq",
+
+    /*@SequenceGenerator(name = "fkey_id_seq",
             schema = "tech", sequenceName = "fkey_id_seq", allocationSize = 1
     )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fkey_id_seq")
-    @Column(name = "fk_id")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fkey_id_seq")*/
+    @Id
+    private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapsId
+    @JoinColumn(name = "column_id")
+    private ColumnMeta owner;
     private Boolean multiply;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "ref_column")
     private ColumnMeta refColumn;
 
-/*  Мб можно без неё?
-
-    @OneToOne(mappedBy = "fkey", optional = false)
-    private ColumnMeta from;*/
+    /*@OneToMany(mappedBy = "fkey")
+    private List<ColumnMeta> columnMetaList = new LinkedList<>();*/
 
     @Override
     public boolean equals(Object o) {

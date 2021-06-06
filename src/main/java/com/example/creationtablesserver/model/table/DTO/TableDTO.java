@@ -1,13 +1,17 @@
 package com.example.creationtablesserver.model.table.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
-public class TableDTO {
+@EqualsAndHashCode(of = "tableId")
+public class TableDTO implements Serializable {
     private Long tableId;  // относительно проекта
     private String name;
 
@@ -16,6 +20,7 @@ public class TableDTO {
     private List<ForeignKey> foreignKeys;
     private List<PrimaryKey> primaryKeys;
 
+    @JsonIgnore
     public NormalTableDto getNormalVersion() {
         return new NormalTableDto(this);
     }

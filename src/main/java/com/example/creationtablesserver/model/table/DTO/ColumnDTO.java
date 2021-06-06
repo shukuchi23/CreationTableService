@@ -1,12 +1,16 @@
 package com.example.creationtablesserver.model.table.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
+@AllArgsConstructor
 public class ColumnDTO {
         private String columnName ;
+        @JsonProperty(value = "type")
         private String columnType;
 
         public ColumnDtoWithPkAndFkField withPkAndFkFields(){
