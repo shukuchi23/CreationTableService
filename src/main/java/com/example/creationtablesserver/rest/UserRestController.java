@@ -9,7 +9,6 @@ import com.example.creationtablesserver.model.table.DTO.OldTableDTO;
 import com.example.creationtablesserver.model.table.DTO.TableDTO;
 import com.example.creationtablesserver.model.user.AuthorityUser;
 import com.example.creationtablesserver.model.user.DTO.UserDTO;
-import com.example.creationtablesserver.service.ProjectService;
 import com.example.creationtablesserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -96,6 +95,10 @@ public class UserRestController {
         if (!target.isPresent())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        target.get().getTables()
+                .forEach(t ->
+                        postgresDAO.delete(t.getTable_name())
+                );
         user.removeProject(target.get());
         return new ResponseEntity<>("project was dropped", HttpStatus.OK);
     }

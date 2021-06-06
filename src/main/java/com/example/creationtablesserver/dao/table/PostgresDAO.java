@@ -36,9 +36,7 @@ public class PostgresDAO implements TableDAO {
 
         str.append(");");
         jdbcTemplate.execute(str.toString());
-
     }
-
 
     private StringBuilder fkeyToSql(List<OldForeignKey> fkeys) {
 
@@ -48,20 +46,19 @@ public class PostgresDAO implements TableDAO {
         Set<String> nameSet = new HashSet<>();
 
         Iterator<OldForeignKey> fkeyIter = fkeys.iterator();
-
         while (fkeyIter.hasNext()) {
             OldForeignKey fkey = fkeyIter.next();
             if (!nameSet.contains(fkey.getReferenceTable())) {
                 /*Если уже есть запись в nameSet, значит внешних ключей несколько*/
                 if (!nameSet.isEmpty())
                     str.append(", ");
-                nameSet.add(fkey.getReferenceTable().toString());
+                nameSet.add(fkey.getReferenceTable());
                 StringBuilder prefix = new StringBuilder().append("FOREIGN KEY (");
                 StringBuilder suffix = new StringBuilder().append("REFERENCES ").append(fkey.getReferenceTable())
                         .append(" (");
                 /*--- Внешний ключ может быть композитный ---*/
                 /*Столбцы ссылающиеся на таблицу*/
-                List<OldForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable().toString(), fkeys.iterator());
+                List<OldForeignKey> referenceTableColumn = getAllFkeysByRefTable(fkey.getReferenceTable(), fkeys.iterator());
                 Iterator<OldForeignKey> rtc_iter = referenceTableColumn.iterator();
 
                 OldForeignKey fk = rtc_iter.next();
@@ -96,7 +93,6 @@ public class PostgresDAO implements TableDAO {
 
     private StringBuilder pkeyToSql(Iterator<PrimaryKey> pkey_iter) {
         StringBuilder str = new StringBuilder("primary key ( ");
-
         PrimaryKey pkey = pkey_iter.next();
         str.append(pkey.getKey());
         while (pkey_iter.hasNext()) {
@@ -107,7 +103,6 @@ public class PostgresDAO implements TableDAO {
         return str;
     }
 
-
     @Override
     public boolean update(TableDTO table) {
         return false;
@@ -115,6 +110,6 @@ public class PostgresDAO implements TableDAO {
 
     @Override
     public void delete(String table) {
-        jdbcTemplate.execute(String.format("drop table if exists %s;", table));
+        jdbcTemplate.execute(String.format("drop table if exists %s cascade;", table));
     }
 }
