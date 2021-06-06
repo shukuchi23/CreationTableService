@@ -1,4 +1,4 @@
-package com.example.creationtablesserver.model.utils;
+package com.example.creationtablesserver.model.project;
 
 import com.example.creationtablesserver.model.project.DTO.ProjectDTO;
 import com.example.creationtablesserver.model.project.Project;

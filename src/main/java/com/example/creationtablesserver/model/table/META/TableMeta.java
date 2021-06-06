@@ -28,18 +28,9 @@ public class TableMeta implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "table_id_seq")
     private Long table_id;
 
-/*
-    @EmbeddedId
-    private TableId table_id;
-*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    /*@MapsId("projectId")
-    @JoinColumns({
-            @JoinColumn(name = "project_id", referencedColumnName = "project_id"),
-            @JoinColumn(name = "owner_id", referencedColumnName = "owner_id"),
-    })*/
     private Project project;
 
     private String table_name;
